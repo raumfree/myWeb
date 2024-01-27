@@ -8,6 +8,8 @@ use apps\Mail\ConnectionMail;
 
 
 ConnectionDB::get_connection();
-ConnectionMail::get_connection();
+$test = ConnectionMail::get_connection()->get_messages();
 
+
+//print_r($test);
 

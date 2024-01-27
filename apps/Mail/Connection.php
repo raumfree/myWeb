@@ -22,7 +22,34 @@ class ConnectionMail extends Configuration
         }
     }
 
+    public function get_messages()
+    {
+        $mails = imap_search($this->imap, 'UNSEEN');
+        echo "[LOG] Checking your mail.\n";
+        if (!$mails){
+            echo "[LOG] There are no new messages.\n";
+            return null;
+        }
+        echo "[LOG] Message analysis...\n";
+        $mails_arr = array();
+        foreach ($mails as $num){
+            $letter = mb_decode_mimeheader(imap_headerinfo($this->imap, $num)->subject);
 
+            if (preg_match("/[a-zA-Z]+\.[a-z]+ - [a-zA-Zа-яА-Я]/", $letter)){
+                $mails_arr[] = imap_headerinfo($this->imap, $num);
+                //imap_setflag_full($this->imap, $num, "\\Seen");
+            }
+        }
+
+        if ($mails_arr){
+            echo "[LOG] " . count($mails_arr) . " valid emails found. \n";
+            return $mails_arr;
+        }else{
+            echo "[LOG] The emails are not valid.\n";
+            return null;
+        }
+
+    }
 
     public static function get_connection()
     {
