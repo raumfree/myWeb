@@ -12,8 +12,9 @@ class Configuration
             echo "[LOG] Reading config.ini.\n";
             $this->config = parse_ini_file("config/config.ini");
             if ($this->config === false){
-                echo "The file could not be read config.ini.";
+                echo "[LOG] The file could not be read config.ini.";
             }
+            return $this->config;
         }else{
             echo "[LOG] Return config.ini.\n";
             return $this->config;
