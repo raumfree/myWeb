@@ -6,11 +6,10 @@ require "apps\Configuration.php";
 
 use apps\Configuration;
 
-class Connection extends Configuration
+class ConnectionDB extends Configuration
 {
 
     protected $pdo = null;
-    protected $pdo1 = 12;
     private  static $connection = null;
 
     function __construct()
@@ -28,7 +27,16 @@ class Connection extends Configuration
 
         $this->pdo = new \PDO($parameters);
         $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        echo "[LOG] The connection to the database was successful.\n";
 
+        return $this->pdo;
+    }
+
+    public function query($array_messages)
+    {
+        foreach($array_messages as $letter){
+            //
+        }
     }
 
     public static function get_connection()

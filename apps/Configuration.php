@@ -20,4 +20,9 @@ class Configuration
             return $this->config;
         }
     }
+
+    public static function get_connection()
+    {
+        //
+    }
 }
