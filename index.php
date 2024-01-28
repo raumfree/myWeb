@@ -7,9 +7,12 @@ use apps\Database\ConnectionDB;
 use apps\Mail\ConnectionMail;
 
 
-ConnectionDB::get_connection();
+$database = ConnectionDB::get_connection();
+
+// Таймер
+
 $test = ConnectionMail::get_connection()->get_messages();
+$database->query($test);
 
 
-//print_r($test);
 

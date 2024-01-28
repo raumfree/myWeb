@@ -34,9 +34,21 @@ class ConnectionDB extends Configuration
 
     public function query($array_messages)
     {
-        foreach($array_messages as $letter){
-            //
+        echo "[LOG] Creating an SQL query.\n";
+        $request = "INSERT INTO public.task (domen, name_form, date_time) VALUES ";
+        foreach ($array_messages as $message){
+            $header = explode("-", mb_decode_mimeheader($message->subject));
+            $request .= sprintf(
+                "( '%s'::text, '%s'::text, '%s'::timestamp without time zone),",
+                trim($header[0]),
+                ltrim($header[1]),
+                substr($message->MailDate,0,-6)
+            );
         }
+        $request = substr($request,0,-1);
+        echo "[LOG] SQL query: " . $request . "\n";
+        $this->pdo->query($request);
+        echo "[LOG] Saved to the database. \n";
     }
 
     public static function get_connection()
