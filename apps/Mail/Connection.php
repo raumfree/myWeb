@@ -10,7 +10,7 @@ class ConnectionMail extends Configuration
     private  static $connection = null;
 
 
-    function __construct(){
+    private function connecting(){
         echo "[LOG] Connecting to the mail...\n";
         $config =  $this->get_ini_config();
         $this->imap = imap_open($config['serverName'],$config['mail'],$config['mailPassword']);
@@ -24,6 +24,7 @@ class ConnectionMail extends Configuration
 
     public function get_messages()
     {
+        $this->connecting();
         $mails = imap_search($this->imap, 'UNSEEN');
         echo "[LOG] Checking your mail.\n";
         if (!$mails){
@@ -35,11 +36,12 @@ class ConnectionMail extends Configuration
         foreach ($mails as $num){
             $letter = mb_decode_mimeheader(imap_headerinfo($this->imap, $num)->subject);
 
-            if (preg_match("/[a-zA-Z]+\.[a-z]+ - [a-zA-Zа-яА-Я]/", $letter)){
+            if (preg_match("/[a-zA-Z]+\.[a-z]+ - [a-zA-Zа-яА-Я1-9]/", $letter)){
                 $mails_arr[] = imap_headerinfo($this->imap, $num);
-                //imap_setflag_full($this->imap, $num, "\\Seen");
+                imap_setflag_full($this->imap, $num, "\\Seen");
             }
         }
+        imap_close($this->imap);
 
         if ($mails_arr){
             echo "[LOG] " . count($mails_arr) . " valid emails found. \n";

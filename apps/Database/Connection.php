@@ -34,6 +34,9 @@ class ConnectionDB extends Configuration
 
     public function query($array_messages)
     {
+        if (!$array_messages){
+            return null;
+        }
         echo "[LOG] Creating an SQL query.\n";
         $request = "INSERT INTO public.task (domen, name_form, date_time) VALUES ";
         foreach ($array_messages as $message){
