@@ -43,9 +43,9 @@ class ConnectionDB extends Configuration
             $header = explode("-", mb_decode_mimeheader($message->subject));
             $request .= sprintf(
                 "( '%s'::text, '%s'::text, '%s'::timestamp without time zone),",
-                trim($header[0]),
-                ltrim($header[1]),
-                substr($message->MailDate,0,-6)
+                htmlspecialchars(trim($header[0])),
+                htmlspecialchars(ltrim($header[1])),
+                htmlspecialchars(substr($message->MailDate,0,-6))
             );
         }
         $request = substr($request,0,-1);

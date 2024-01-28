@@ -15,23 +15,29 @@ class ConnectionMail extends Configuration
         $config =  $this->get_ini_config();
         $this->imap = imap_open($config['serverName'],$config['mail'],$config['mailPassword']);
 
-        if ($this->imap){
-            echo "[LOG] Gmail connection is successful.\n";
-        }else{
+        if (!$this->imap){
             echo "[LOG] Gmail connection failed.\n";
+            die();
         }
+
+        echo "[LOG] Gmail connection is successful.\n";
+
     }
 
     public function get_messages()
     {
         $this->connecting();
         $mails = imap_search($this->imap, 'UNSEEN');
+
         echo "[LOG] Checking your mail.\n";
+
         if (!$mails){
             echo "[LOG] There are no new messages.\n";
-            return null;
+            return;
         }
+
         echo "[LOG] Message analysis...\n";
+
         $mails_arr = array();
         foreach ($mails as $num){
             $letter = mb_decode_mimeheader(imap_headerinfo($this->imap, $num)->subject);
@@ -45,12 +51,11 @@ class ConnectionMail extends Configuration
 
         if ($mails_arr){
             echo "[LOG] " . count($mails_arr) . " valid emails found.\n";
-            return $mails_arr;
         }else{
             echo "[LOG] The emails are not valid.\n";
-            return null;
         }
 
+        return $mails_arr;
     }
 
     public static function get_connection()
