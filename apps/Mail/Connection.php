@@ -44,7 +44,7 @@ class ConnectionMail extends Configuration
         imap_close($this->imap);
 
         if ($mails_arr){
-            echo "[LOG] " . count($mails_arr) . " valid emails found. \n";
+            echo "[LOG] " . count($mails_arr) . " valid emails found.\n";
             return $mails_arr;
         }else{
             echo "[LOG] The emails are not valid.\n";
